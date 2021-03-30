@@ -13,12 +13,12 @@ def send_email(name, title,  subject, body, args=[]):
         container_kwargs={
             "resources": k8s.V1ResourceRequirements(limits={"cpu": "1", "memory": "1Gi"}),
             "env": [
-                k8s.V1EnvVar("NOTEBOOK", "/opt/" + notebook),
-            ],
+                k8s.V1EnvVar("TITLE", title),
+                k8s.V1EnvVar("SUBJECT", subject)
+            ]
         },
         file_outputs={
             **outputs,
             "mlpipeline-ui-metadata": "/mlpipeline-ui-metadata.json"
         }
     )
-
