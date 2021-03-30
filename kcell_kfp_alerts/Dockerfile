@@ -4,4 +4,4 @@ RUN pip install --user kcell-kubeflow-alerts --extra-index-url https://artifacto
 
 COPY entrypoint.ash /opt/
 
-CMD ['/entrypoint.ash']
+CMD ['/opt/entrypoint.ash']
