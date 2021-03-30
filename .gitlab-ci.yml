@@ -1,0 +1,12 @@
+image: python:latest
+
+stages:
+- build
+
+build-module:
+  stage: build
+  script:
+  - eval "echo \"$(cat .pypirc)\"" > ~/.pypirc
+  - sed -i -e"s/__VERSION__/1.$CI_PIPELINE_IID/" setup.py
+  - python setup.py sdist upload -r local
+
