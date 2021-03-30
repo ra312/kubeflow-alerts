@@ -1,10 +1,12 @@
+import os
+
 import kfp
 from kubernetes.client.models import V1EnvVar, V1ResourceRequirements, V1Volume, V1HostPathVolumeSource, V1SecretVolumeSource
 from kcell_kfp_runners import HADOOP_VOLUMES
 ALERT_IMAGE="artifactory.kraken.kcell.kz:6555/datalake-email-alert:latest"
 
 @kfp.dsl.component
-def send_email(name, title,  subject, body, args=[]):
+def send_email(name, sender, recipient, title,  subject, body, args=[]):
     return kfp.dsl.ContainerOp(
         name=name,
         image=ALERT_IMAGE,
@@ -13,8 +15,11 @@ def send_email(name, title,  subject, body, args=[]):
         container_kwargs={
             "resources": k8s.V1ResourceRequirements(limits={"cpu": "1", "memory": "1Gi"}),
             "env": [
+                k8s.V1EnvVar("SENDER", sender),
+                k8s.V1EnvVar("RECIPIENT", recipient),
                 k8s.V1EnvVar("TITLE", title),
-                k8s.V1EnvVar("SUBJECT", subject)
+                k8s.V1EnvVar("SUBJECT", subject),
+                k8s.V1EnvVar("BODY", body)
             ]
         },
         file_outputs={
@@ -22,3 +27,11 @@ def send_email(name, title,  subject, body, args=[]):
             "mlpipeline-ui-metadata": "/mlpipeline-ui-metadata.json"
         }
     )
+@kfp.dsl.component
+def failure_on_purpose():
+    return kfp.dsl.ContainerOp(
+        name='fail-on-purpose',
+        image="artifactory.kraken.kcell.kz:6555/alpine:latest",
+        command=['ash', '-c', '''  exit 1''']
+    )
+
