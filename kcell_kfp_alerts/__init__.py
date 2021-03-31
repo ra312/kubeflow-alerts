@@ -34,3 +34,11 @@ def failure_on_purpose():
         command=['ash', '-c', '''  exit 1''']
     )
 
+
+@kfp.dsl.component
+def check_oracle_partitions():
+    return kfp.dsl.ContainerOp(
+        name='check-oracle-partitions',
+        image=ALERT_IMAGE,
+        pvolumes=HADOOP_VOLUMES,
+        arguments=args)
