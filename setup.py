@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="kcell-kubeflow-alerts",
-    version='1.3',
+    version='1.8',
     author="Rauan Akylzhanov",
     author_email="rauan.akylzhanov@kcell.kz",
     description="KCell Kubeflow Alerts",
