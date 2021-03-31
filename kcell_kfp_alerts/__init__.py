@@ -38,7 +38,18 @@ def failure_on_purpose():
 @kfp.dsl.component
 def check_oracle_partitions():
     return kfp.dsl.ContainerOp(
-        name='check-oracle-partitions',
-        image=ALERT_IMAGE,
-        pvolumes=HADOOP_VOLUMES,
-        arguments=args)
+            name='check-oracle-partitions',
+            image=ALERT_IMAGE,
+            pvolumes=HADOOP_VOLUMES,
+            arguments=args,
+            container_kwargs={
+                "resources": V1ResourceRequirements(limits={"cpu": "1", "memory": "1Gi"}),
+                # "env": [
+                #     V1EnvVar("SENDER", sender),
+                #     V1EnvVar("RECIPIENT", recipient),
+                #     V1EnvVar("SUBJECT", subject),
+                #     V1EnvVar("BODY", body),
+                #     V1EnvVar("ATTACHMENT_PATH", attachment_path)
+                # ]
+            }
+        )
