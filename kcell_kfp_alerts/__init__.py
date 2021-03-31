@@ -1,6 +1,7 @@
 import os
 
 import kfp
+import kubernetes as k8s
 from kubernetes.client.models import V1EnvVar, V1ResourceRequirements, V1Volume, V1HostPathVolumeSource, V1SecretVolumeSource
 from kcell_kfp_runners import HADOOP_VOLUMES
 ALERT_IMAGE="artifactory.kraken.kcell.kz:6555/datalake-email-alert:latest"
