@@ -6,7 +6,7 @@ from kcell_kfp_runners import HADOOP_VOLUMES
 ALERT_IMAGE="artifactory.kraken.kcell.kz:6555/datalake-email-alert:latest"
 
 @kfp.dsl.component
-def send_email(name, sender, recipient, title,  subject, body, args=[]):
+def send_run_status_email_(name, sender, recipient, title,  subject, body, args=[]):
     return kfp.dsl.ContainerOp(
         name=name,
         image=ALERT_IMAGE,
