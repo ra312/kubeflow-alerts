@@ -39,15 +39,17 @@ def get_result_safely(result, name):
 def sensor():
     query = "select count(*) as cnt_all from dwh.fct_usage where event_date=trunc(sysdate-1) group by event_date"
     options = {"fetchsize": "5000"}
-    while (True):
-        result = get_spark(query,options).load()
-        cnt_all = get_result_safely(result, "CNT_ALL")
-        if cnt_all < 3000000:
-            break
-        else:
-            pass
-    logging.info("\n")
-    logging.info("The conditions has not been met")
-    time.sleep(60 * 10)
+    # while (True):
+    result = get_spark(query,options).load()
+    cnt_all = get_result_safely(result, "CNT_ALL")
+    if cnt_all < 3000000:
+      logging.info("The conditions has not been met")
+      exit(1)
+    # else:
+    #     pass
+    # logging.info("\n")
+    # logging.info("The conditions has not been met")
+
+    # time.sleep(60 * 10)
 
 sensor()
