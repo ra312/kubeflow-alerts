@@ -43,7 +43,7 @@ def sensor():
     result = get_spark(query,options).load()
     cnt_all = get_result_safely(result, "CNT_ALL")
     if cnt_all < 3000000:
-      logging.info("The conditions has not been met")
+      logging.info(f"\n\n <<<<< The condition \n {query} \n has not been met! >>>>>")
       exit(1)
     # else:
     #     pass
