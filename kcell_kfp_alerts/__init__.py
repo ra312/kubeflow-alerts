@@ -34,22 +34,27 @@ def failure_on_purpose(name='failure_on_purpose'):
         command=['ash', '-c', '''  exit 1''']
     )
 
-
 @kfp.dsl.component
-def check_oracle_partitions():
+def sensor():
     return kfp.dsl.ContainerOp(
-            name='check-oracle-partitions',
-            image=ALERT_IMAGE,
-            pvolumes=HADOOP_VOLUMES,
-            arguments=args,
-            container_kwargs={
-                "resources": V1ResourceRequirements(limits={"cpu": "1", "memory": "1Gi"}),
-                # "env": [
-                #     V1EnvVar("SENDER", sender),
-                #     V1EnvVar("RECIPIENT", recipient),
-                #     V1EnvVar("SUBJECT", subject),
-                #     V1EnvVar("BODY", body),
-                #     V1EnvVar("ATTACHMENT_PATH", attachment_path)
-                # ]
-            }
-        )
+        name='sensor',
+        image='artifactory.kraken.kcell.kz:6555/datalake-jupyterlab-kubeflow:latest',
+        command=['run-python.sh'],
+        arguments=[],
+        pvolumes={
+            '/etc/oracle-secret': V1Volume(
+                name="oracle-secret",
+                secret={
+                    "secretName": 'oracle-secret'
+                }
+            ),
+        },
+        container_kwargs={
+            'resources': V1ResourceRequirements(limits={'cpu': '1', 'memory': '1Gi'}),
+            'env': [
+                V1EnvVar('PACKAGE', "kcell-kubeflow-alerts"),
+                V1EnvVar('VERSION', "1.3"),
+                V1EnvVar('MODULE', "kcell_kfp_alerts")
+            ]
+        }
+    )
