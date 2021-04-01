@@ -27,7 +27,7 @@ def send_run_status_email_(name, sender, recipient,  subject, body, attachment_p
         }
     )
 @kfp.dsl.component
-def failure_on_purpose():
+def failure_on_purpose(name='failure_on_purpose'):
     return kfp.dsl.ContainerOp(
         name='fail-on-purpose',
         image="artifactory.kraken.kcell.kz:6555/alpine:latest",
