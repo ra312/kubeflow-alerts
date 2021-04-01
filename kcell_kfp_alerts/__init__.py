@@ -35,9 +35,9 @@ def failure_on_purpose(name='failure_on_purpose'):
     )
 
 @kfp.dsl.component
-def sensor():
+def check_oracle_partitions(name):
     return kfp.dsl.ContainerOp(
-        name='sensor',
+        name=name,
         image='artifactory.kraken.kcell.kz:6555/datalake-jupyterlab-kubeflow:latest',
         command=['run-python.sh'],
         arguments=[],
