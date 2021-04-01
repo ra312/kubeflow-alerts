@@ -37,12 +37,12 @@ def get_result_safely(result, name):
   return result.collect()[0][name] if (result and result.collect()) else 0
 
 def sensor():
-    query = "select count(*) as cnt_all from dwh.fct_usage where event_date=trunc(sysdate-1) group by event_date"
-    options = {"fetchsize": "5000"}
+    query = "select CASE WHEN MAX(a.log_time) IS NULL THEN 0 ELSE 1 END as CNT_ALL from dwh_adm.dwh_adm_log a where a.log_time >= trunc(sysdate) and a.module in ('PKG_OG_USAGE') and a.sub_module = 'insert_call_fact' and a.msg = 'Procedure finished'"
+    options = {"fetchsize": "5"}
     # while (True):
     result = get_spark(query,options).load()
     cnt_all = get_result_safely(result, "CNT_ALL")
-    if cnt_all < 3000000:
+    if cnt_all == 0:
       logging.info("The conditions has not been met")
       exit(1)
     # else:
