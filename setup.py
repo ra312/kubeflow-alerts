@@ -14,9 +14,5 @@ setuptools.setup(
     description="KCell Kubeflow Alerts",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages(),
-    install_requires=[
-        'kfp==1.0.1'
-    ],
-    python_requires='>=3.6',
+    packages=["kcell_kfp_alerts"],
 )
