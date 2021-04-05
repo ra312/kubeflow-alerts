@@ -53,7 +53,7 @@ def check_oracle_partitions(name):
             'resources': V1ResourceRequirements(limits={'cpu': '1', 'memory': '1Gi'}),
             'env': [
                 V1EnvVar('PACKAGE', "kcell-kubeflow-alerts"),
-                V1EnvVar('VERSION', "1.3"),
+                V1EnvVar('VERSION', "1.8"),
                 V1EnvVar('MODULE', "kcell_kfp_alerts")
             ]
         }
